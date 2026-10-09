@@ -9,7 +9,16 @@ export async function createFile({name, size, folderId}){
     return file
 }
 
+export async function getFiles(){
+    const sql = `
+    SELECT files.id, files.name, size, folders.id AS folder_id, folders.name AS folder_name FROM files LEFT JOIN folders ON folder_id = folders.id;
+    `;
+    const {rows:files}= await db.query(sql);
+    if (!files.length === 0 ) return null; 
+    return files
+};
 
+//SELECT files.id, files.name, size, folders.name FROM files LEFT JOIN folders ON folder_id = folders.id;
 // seed the databse with 5 files per folder
 
 export const fileList = [
